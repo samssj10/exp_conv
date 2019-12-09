@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<ctype.h>//for using the function isalnum()
+#include<string.h>
 #include "stackhead.h"
 
 int length(char *str)
@@ -34,9 +35,23 @@ void reverse(char str[])
     {
         str[len-i-1]=str2[i];
     }
-    //str2[i]='\0';
-
 }
+
+void concat(char *str,char *str2)
+{
+    while (*str!='\0')
+    {
+        str++;
+    }
+    while(*str2!='\0')
+    {
+        *str=*str2;
+        str++;
+        str2++;
+    }
+    *str='\0';
+}
+
 int icp(int ch)//for precedence of output or in postfix expression
 {
     if(ch=='+'||ch=='-')
@@ -163,14 +178,14 @@ void in_pre (char inexp[100],char postexp[100])
             k++;
         }
 
-        else if(tkn=='(')
-        {
-            push('(');
-        }
-
         else if(tkn==')')
         {
-            while((tkn=pop())!='(')
+            push(')');
+        }
+
+        else if(tkn=='(')
+        {
+            while((tkn=pop())!=')')
             {
                 postexp[k]=tkn;
                 k++;
@@ -179,7 +194,7 @@ void in_pre (char inexp[100],char postexp[100])
 
         else
         {
-            while(!isempty() && (isp(stk[top])>=icp(tkn)))
+            while(!isempty() && (ispre(stk[top])>=icpre(tkn)))
             {
                 postexp[k]=pop();
                 k++;
@@ -200,6 +215,61 @@ void in_pre (char inexp[100],char postexp[100])
      
 }
 
+void post_in(char postexp[100],char newinexp[100])
+{
+    int l=length(postexp);
+    int i;
+    char e1[100];
+    int j=0;
+    int k=0;
+    for(i=0;i<l;i++)
+    {   
+        char x=postexp[i];
+        if(isalnum(x))//check if x is operand
+        {   
+            push(x);
+        }
+        else // x is operator
+        {
+            if(i==l-1)
+            {
+                if(isalnum(stk[top]))
+                {   
+                    newinexp[j]=x;
+                    newinexp[j+1]=stk[top];
+                    k=j+1;
+                }
+                else
+                {   
+                   // printf("jth position is %c",newinexp[j]);
+                    while(newinexp[j]!='(')
+                    {
+                        newinexp[j]=newinexp[j-1];
+                        j--;
+                    }
+                    newinexp[j+1]=newinexp[j];
+                    newinexp[j]=x;
+                }
+            }
+            
+            else
+            {
+            char op1=pop();
+            char op2=pop();
+           // e1=strcat('(',op2,x,op1,')');
+            newinexp[j]='(';
+            newinexp[j+1]=op2;
+            newinexp[j+2]=x;
+            newinexp[j+3]=op1;
+            newinexp[j+4]=')';
+            j=j+5;
+            k=j;
+            }   
+        }
+    }
+    newinexp[k+1]='\0';
+}
+
 int main()
 {   
     char inexp[100];
@@ -207,8 +277,9 @@ int main()
     scanf("%s",inexp);
     char postexp[100];
     char prefexp[100];
+    char newinexp[100];
     int n;
-    printf("MENU:\n 1.infix to postfix\n 2.infix to prefix\n");
+    printf("MENU:\n 1.infix to postfix\n 2.infix to prefix\n 3.postfix to infix\n");
     scanf("%d",&n);
     switch (n)
     {
@@ -219,12 +290,20 @@ int main()
     
     case 2:
         reverse(inexp);
-        printf("reversed string is %s",inexp);
         in_pre(inexp,prefexp);
         reverse(prefexp);
         printf("corresponding prefix expression is : %s\n",prefexp);
         break;
-    }
     
+    case 3:
+        in_post(inexp,postexp);
+        printf("corresponding postfix expression is %s\n",postexp);
+        post_in(postexp,newinexp);
+        printf("corresponding infix expression is %s",newinexp);
+        break;
+    
+    case 4:
+        post_pre(postexp,newprefexp);
+    }
     return 0;
 }
