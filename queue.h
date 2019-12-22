@@ -57,7 +57,7 @@ void addcq(int elem)
 {   
     int check=(rearcq+1)%max;
     printf("check=%d",check);
-    if(check==front)
+    if(check==frontcq)
     {
         printf("sorry we can't accept any more orders right now\n");
     }
