@@ -174,22 +174,24 @@ int delete(struct node *head)
 struct node *reverse (struct node *head)
 {
     struct node *first;
+    first=NULL;
     struct node *prev;
     prev=NULL;
     struct node *mid;
     mid=(struct node *)malloc(sizeof(struct node));
     mid=head->next;
-    struct node *ptr; 
+    struct node *ptr;
+    ptr=(struct node *)malloc(sizeof(struct node)); 
     ptr=NULL;
     while(mid!=NULL)
-    {
+    {   
+        printf("i am here\n");
         ptr=mid->next; 
+        mid->next=prev;
         prev=mid;
         mid=ptr;
-        ptr=ptr->next;
-        mid->next=prev;
     }
-    first=mid;
+    first=prev;
     return first;
 }
 
@@ -229,7 +231,10 @@ int main()
                 first=reverse(head);
                 head->next=first;
                 break;
-                
+            case 6: // bubble sort
+                first=sort(head);
+                head->next=first;
+                break;
 
         }
     }
