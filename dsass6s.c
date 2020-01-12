@@ -195,6 +195,44 @@ struct node *reverse (struct node *head)
     return first;
 }
 
+void sort(struct node *head)
+{
+    struct node *p;
+    p=(struct node *)malloc(sizeof(struct node));
+    struct node *q;
+    q=(struct node *)malloc(sizeof(struct node));
+    int data;
+    q=head->next;
+    while(q!=NULL)
+    {
+        p=q->next;
+        while(p!=NULL)
+        {
+            if(q->data>p->data)
+            {
+                data=p->data;
+                p->data=q->data;
+                q->data=data;
+            }
+            p=p->next;
+        }
+        q=q->next;
+    }
+}
+
+void merge(struct node *head,struct node *head2)
+{
+    struct node *temp;
+    temp=head->next;
+    struct node *temp2;
+    temp2=head2->next;
+    while(temp->next!=NULL)
+    {
+        temp=temp->next;
+    }
+    temp->next=temp2;
+}
+
 int main()
 {   
     struct node *head;
@@ -203,6 +241,13 @@ int main()
     struct node *first;
     first=NULL;// pointer needs to initialized
     int delstat;
+    
+    struct node *head2;//for nth list to be merged
+    head2=(struct node *)malloc(sizeof(struct node));// sizeof calculates size of struct node and then malloc allocates that much space in memory and returns it to head
+    head2->next=NULL;// linked list is empty at beginning.
+    struct node *first2;
+    first2=NULL;// pointer needs to initialized
+    
     int n;
     while(n!=8)
     {
@@ -232,10 +277,16 @@ int main()
                 head->next=first;
                 break;
             case 6: // bubble sort
-                first=sort(head);
-                head->next=first;
+                sort(head);
                 break;
-
+            case 7: // merging 2 sorted linked lists
+            
+                first2=create();
+                head2->next=first2;
+                sort(head2);
+                merge(head,head2);
+                sort(head);
+                break;
         }
     }
     return 0;
