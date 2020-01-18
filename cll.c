@@ -144,13 +144,13 @@ int main()
     head->next=head;
     create(head);
     display(head);
-   /* struct node *head2;
+    struct node *head2;
     head2=(struct node *)malloc(sizeof(struct node));
     head2->exp=-1;
     head2->next=head2;
     create(head2);
     display(head2);
-    add(head,head2);*/
+    add(head,head2);
     int x;
     printf("enter value of x\n");
     scanf("%d",&x);
