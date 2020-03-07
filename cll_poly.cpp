@@ -97,6 +97,41 @@ class poly
         }
         t->next=head;
     }
+    void add_un(poly p1,poly p2) //add unsorted polynomials
+    {
+        node *t,*t1,*t2,*temp;
+        t=head;
+        t1=p1.head->next;
+        t2=p2.head->next;
+        while(t1!=p1.head)
+        {
+            temp=t2;
+            while(temp->exp!=t1->exp && temp!=p2.head) //so that rescan not occur
+            {
+                temp=temp->next;
+            }
+            if(temp->exp==t1->exp)
+            {
+                node *nterm;
+                nterm=new node();
+                nterm->exp=t1->exp;
+                nterm->coef=t1->coef+temp->coef;
+                t->next=nterm;
+                t=nterm;
+            }
+            else
+            {
+                node *nterm;
+                nterm=new node();
+                nterm->exp=t1->exp;
+                nterm->coef=t1->coef;
+                t->next=nterm;
+                t=nterm;
+            }
+            t1=t1->next;
+        }
+        t->next=head;
+    }
     void eval(int x)
     {
         node *temp;
