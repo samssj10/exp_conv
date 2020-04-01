@@ -49,7 +49,11 @@ class tree
                 cout<<"do u want to insert node ?"<<endl;
                 cin>>ch;
                 if(ch=='y') //otherwise memory gets allocated uselessly
-                {
+                {   
+                    node *nnode;
+                    nnode=new node();
+                    cout<<"enter data"<<endl;
+                    cin>>nnode->data;
                     char c;
                     int flag=0;
                     while(flag==0)
@@ -60,10 +64,6 @@ class tree
                         {
                             if(curr->lbit==1)
                             {
-                                node *nnode;
-                                nnode=new node();
-                                cout<<"enter data"<<endl;
-                                cin>>nnode->data;
                                 nnode->left=curr->left;
                                 nnode->right=curr;
                                 curr->lbit=0;
@@ -80,10 +80,6 @@ class tree
                         {
                             if(curr->rbit==1)
                             {
-                                node *nnode;
-                                nnode=new node();
-                                cout<<"enter data"<<endl;
-                                cin>>nnode->data;
                                 nnode->left=curr;
                                 nnode->right=curr->right;
                                 curr->rbit=0;
