@@ -95,8 +95,55 @@ class tree
                     }
                 }
             } while (ch=='y');
+        }
+        
+        void inorder()
+        {
+            node *temp;
+            temp=head;
+            while(1)
+            {
+                temp=in_succ(temp);
+                if(temp==head)
+                {
+                    break;
+                }
+                cout<<temp->data<<endl;
+            }
+        }
 
-             
+        node *in_succ(node *temp)
+        {
+            node *x;
+            x=temp->right;
+            if(temp->rbit==0)
+            {
+                while(x->lbit==0)
+                {
+                    x=x->left;
+                }
+            }
+            return x;
+        }
+
+        void preorder()
+        {
+            node *temp;
+            temp=head->left;
+            while(temp!=head)
+            {
+                cout<<temp->data<<endl;
+                while(temp->lbit!=1)
+                {
+                    temp=temp->left;
+                    cout<<temp->data<<endl;
+                }
+                while(temp->rbit==1)
+                {
+                    temp=temp->right;
+                }
+                temp=temp->right;
+            }
         }
 
         void display()
@@ -104,7 +151,15 @@ class tree
             int n;
             cout<<"how do u want to display :\n1.inorder\n2.preorder\n"<<endl;
             cin>>n;
-            
+            switch(n)
+            {
+                case 1:
+                    inorder();
+                    break;
+                case 2:
+                    preorder();
+                    break;
+            }
         }
 
 };
@@ -113,5 +168,6 @@ int main()
 {   
     tree t1;
     t1.create();
+    t1.display();
     return 0;
 }
