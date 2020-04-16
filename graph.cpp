@@ -38,11 +38,44 @@ class stack
 
 };
 
+class queue
+{
+    int front;
+    int rear;
+    node *data[max];
+    friend class graph;
+    public:
+        queue()
+        {
+            front=-1;
+            rear=-1;
+        }
+        void enqueue(node *temp)
+        {
+            if(rear!=max-1)
+            {
+                rear++;
+                data[rear]=temp;
+            }
+        }
+        node *dequeue()
+        {
+            if(front!=rear)
+            {
+                node *temp;
+                front++;
+                temp=data[front];
+                return temp;
+            }
+        }
+};
+
 class graph  //adjacency list representation
 {
     node *head[max];
     int n;
     stack st;
+    queue q;
     public:
         graph()
         {
@@ -175,13 +208,56 @@ class graph  //adjacency list representation
                             curr=head[j];
                             st.push(curr);
                         }
-                        curr=curr->next;//meant for traversing each adjacent vertext list individually
+                        curr=curr->next;//meant for traversing each adjacent vertex list individually
                     }
                 }
             } while (st.top!=-1);
+        }
+
+        void bfs()
+        {
+            int visit[n],i;
+            node *temp,*curr;
+            for(i=0;i<n;i++)
+            {
+                visit[i]=0;
+            }
+            char start;
+            cout<<"enter starting vertex"<<endl;
+            cin>>start;
+            for(i=0;i<n;i++)
+            {
+                if(head[i]->data==start)
+                {   
+                    temp=head[i];
+                    q.enqueue(temp);
+                    visit[i]=1;
+                }
+            }
+            cout<<"BFS display as follows :"<<endl;
+            while (q.front!=q.rear)
+            {
+                curr=q.dequeue();
+                cout<<curr->data<<endl;
+                curr=curr->next;
+                while(curr!=NULL)
+                {
+                    i=0;
+                    while(head[i]->data!=curr->data)
+                    {
+                        i++;
+                    }
+                    if(visit[i]!=1)
+                    {
+                        temp=head[i];
+                        q.enqueue(temp);
+                        visit[i]=1;
+                    }
+                    curr=curr->next; 
+                }
+            }
             
 
-            
         }
 };
 
@@ -189,7 +265,8 @@ int main()
 {
     graph g1;
     g1.create();
-    g1.display_rec();
-    g1.display();
+    //g1.display_rec();
+    //g1.display();
+    g1.bfs();
     return 0;
 }
