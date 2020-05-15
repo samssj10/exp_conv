@@ -109,11 +109,44 @@ class hashing
         cout<<"student records are : "<<endl;
         for(i=0;i<max;i++)
         {   
-            if(s[i].roll_no!=-1)
+            if(s[i].roll_no!=-1) //does not display empty locations
             {   
                 cout<<s[i].name<<" "<<s[i].roll_no<<" "<<s[i].grade<<endl;
             }
         }
+    }
+
+    void search()
+    {   
+        int key,index,i;
+        cout<<"enter key value to be found"<<endl;
+        cin>>key;
+        index = key % max; //dont change this
+        if(s[index].roll_no==key)
+        {
+            cout<<"key found !"<<endl;
+            cout<<s[index].name<<" "<<s[index].roll_no<<" "<<s[index].grade<<endl;
+        }
+        else
+        {
+            i=1;
+            i=(index+i)%max;
+            while(i!=index)
+            {
+                if(s[i].roll_no==key)
+                {
+                    cout<<"key found !"<<endl;
+                    cout<<s[i].name<<" "<<s[i].roll_no<<" "<<s[i].grade<<endl;
+                    break;
+                }
+                i=(i+1)%max;
+            }
+            if(i==index)
+            {
+                cout<<"key not found"<<endl;
+            }
+        }
+        
     }
 };
 
@@ -122,5 +155,6 @@ int main()
     hashing h1;
     h1.linear_with();
     h1.display();
+    h1.search();
     return 0;
 }
